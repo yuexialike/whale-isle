@@ -53,7 +53,7 @@ FORBIDDEN = {
     "isla.ico", "isla.png", "appicon.py", "comfy-start-log.txt",
 }
 # 正文里绝对不许出现的字。扫所有小文本文件（_internal 里的二进制跳过）。
-FORBIDDEN_TEXT = ("sk-", "Coopanion", "28117", "D:\\fish\\home")
+FORBIDDEN_TEXT = ("sk-", "Coopanion", "user", "D:\\fish\\home")
 
 _lines: list[str] = []
 

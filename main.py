@@ -843,7 +843,7 @@ def main() -> int:
     def _voice_job(a: dict) -> None:
         """闹钟带 voice 的：说一句，再从 QQ 发一条语音过去。"""
         try:
-            to = str(a.get("to") or cfg.get("daily_voice_to") or "private:2811742503")
+            to = str(a.get("to") or cfg.get("daily_voice_to") or "private:YOUR_QQ")
             prompt = str(a.get("prompt") or a.get("note") or "到点了，跟老爹说一句")
             fallback = str(a.get("say") or a.get("note") or "到点啦")
             line = _speak_line(prompt, fallback)

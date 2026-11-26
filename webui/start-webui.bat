@@ -5,7 +5,7 @@ cd /d "%~dp0"
 
 rem Prefer pyfish.exe: plain python.exe gets killed by Defender behaviour monitoring.
 if exist "D:\fish\webpet\rt\pyfish.exe" (
-  set PYTHONHOME=C:\Users\28117\AppData\Local\Programs\Python\Python312
+  set PYTHONHOME=C:\Users\user\AppData\Local\Programs\Python\Python312
   "D:\fish\webpet\rt\pyfish.exe" server.py
   goto done
 )

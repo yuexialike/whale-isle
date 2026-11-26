@@ -15,3 +15,5 @@ seal.json
 # 跑起来之后自己建出来的（不是源码）
 workspace/
 updates/history/
+
+installer/build-inst/

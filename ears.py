@@ -2,7 +2,7 @@
 
 听写用的是 **SenseVoiceSmall**（FunASR 那个，Coop 也用它），
 模型文件直接复用硬盘上已有的那份，不重新下载：
-    C:\\Users\\28117\\Coopanion\\data\\home\\models\\desktop-pet\\sensevoice-small-int8-2024-07-17\\
+    C:\\Users\\user\\Coopanion\\data\\home\\models\\desktop-pet\\sensevoice-small-int8-2024-07-17\\
 引擎是 sherpa-onnx（pip 装的 Python 版，自带 onnxruntime，不碰 torch）。
 
 为什么用这个而不是别的：
