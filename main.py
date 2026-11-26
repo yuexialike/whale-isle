@@ -173,7 +173,10 @@ def main() -> int:
         return 0
 
     import screen as _screen
-    _screen.dpi_aware()          # 必须在 QApplication 之前：不然坐标是逻辑像素，点起来会偏
+    # 11-26 22:0x：**这一句从「QApplication 之前」挪到了之后。**
+    # 以前抢在 Qt 前面调 SetProcessDpiAwareness(2)（每屏一份，v1 那套），Qt 6 随后想升到
+    # per-monitor v2 就被 Windows 拒了，于是每次开机都打一行「SetProcessDpiAwarenessContext() failed: 拒绝访问」。
+    # DPI 感知由 Qt 自己设就够（它默认就是 v2），我们只在它没设成的平台上补一下——见下面 app 之后那一句。
     # 11-01 19:0x：分层小人（QWebEngineView）要这个属性，而且必须在 QApplication 之前设
     try:
         from PySide6.QtWebEngineWidgets import QWebEngineView  # noqa: F401
@@ -190,6 +193,9 @@ def main() -> int:
         except Exception:
             pass
     app = QApplication(sys.argv)
+    # 保险：Qt 已经把进程设成 per-monitor v2 了，这句什么都不做（dpi_aware 先问再设）；
+    # 万一某个平台 Qt 没设成，这里补上去，坐标才不会缩 0.75 倍。
+    _screen.dpi_aware()
     # 11-01 13:56 修：身体是 Qt.Tool、不算「主窗口」，开场那块才是。开场一 close，
     # Qt 就以为「最后一个窗口关了」→ 整个程序退出去（exit 0，没有报错，鱼凭空没了）。
     # 所以这里明说：别因为没主窗口就退，退出只由 main() 决定。
@@ -837,7 +843,7 @@ def main() -> int:
     def _voice_job(a: dict) -> None:
         """闹钟带 voice 的：说一句，再从 QQ 发一条语音过去。"""
         try:
-            to = str(a.get("to") or cfg.get("daily_voice_to") or "private:1000000000")
+            to = str(a.get("to") or cfg.get("daily_voice_to") or "private:2811742503")
             prompt = str(a.get("prompt") or a.get("note") or "到点了，跟老爹说一句")
             fallback = str(a.get("say") or a.get("note") or "到点啦")
             line = _speak_line(prompt, fallback)

@@ -18,12 +18,32 @@ from pathlib import Path
 SHOT_MAX = (1280, 800)
 
 
+def _already_aware() -> bool:
+    """进程现在是 DPI 感知的吗？0=不知道自己在缩放，1=整机一份，2=每屏一份。"""
+    try:
+        now = ctypes.c_int()
+        hr = ctypes.windll.shcore.GetProcessDpiAwareness(0, ctypes.byref(now))
+        return hr == 0 and now.value != 0
+    except Exception:
+        return False
+
+
 def dpi_aware() -> None:
     """开进程就调，**要在 QApplication 之前**——之后再调，Qt 已经按逻辑像素算好了。
 
     不调的话：截图是「缩过的逻辑像素」（1707×1067），鼠标坐标也是逻辑的，
     跟外面看到的 2560×1600 差 0.75 倍，点起来会偏。
+
+    11-26 22:0x：**先问一句「是不是已经设过了」，设过就直接走。**
+    Qt 6 自己在 QApplication 里把进程设成 per-monitor v2；我们再设一次一定失败
+    （一个进程只认第一次）。而那行我们记了快一个月的警告
+        qt.qpa.window: SetProcessDpiAwarenessContext() failed: 拒绝访问。
+        Qt's default DPI awareness context is DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2...
+    就是「我们抢在 Qt 前面设了 v1，Qt 再想升到 v2 被拒」发出来的——
+    不是坏了，是同一次设置被做了两遍。
     """
+    if _already_aware():
+        return
     try:
         ctypes.windll.shcore.SetProcessDpiAwareness(2)   # per-monitor DPI aware
     except Exception:
