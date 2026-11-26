@@ -1,0 +1,10 @@
+{
+  "name": "jingyu-tools-world",
+  "private": true,
+  "type": "module",
+  "description": "鲸屿的 20 个工具，包成 Cortico World（工具在 Python 侧车里）",
+  "cortico": {
+    "kind": "world",
+    "api": 6
+  }
+}

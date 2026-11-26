@@ -1,0 +1,42 @@
+# 鲸屿 —— 不进仓库的东西
+
+# ① 私钥与本地配置：绝对不能上云
+license-key.txt
+config.json
+config.backup.json
+*.seal
+beta.marker
+*.marker
+
+# ② 运行时数据、日志、记忆
+data/
+workspace/
+logs/
+# updates/history 里放过我自己的 CONSTITUTION / PARTNER / STATE / handoffs（私人记忆），整块不进仓
+updates/
+*.log
+
+# ③ 打包产物（要发就用 Releases，不塞进仓库历史）
+build/
+dist/
+__pycache__/
+*.pyc
+*.exe
+*.pkg
+*.zip
+
+# ④ 从别处整包拷来的资源（对外不发，也别往云端放）
+skin/figures/whale/
+
+# ⑤ 一次性的探针脚本
+_*.py
+_*.bat
+_*.ps1
+_*.txt
+_*.png
+probe-*.py
+
+# ⑥ 系统杂项
+desktop.ini
+Thumbs.db
+.DS_Store

@@ -1,0 +1,461 @@
+[
+  {
+    "name": "list_memory",
+    "description": "列出工作区某个目录里有什么（文件名 + 大小）。不给 dir 就列工作区根。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "dir": {
+          "type": "string",
+          "description": "目录，相对工作区；空 = 根"
+        }
+      }
+    },
+    "tags": [
+      "read"
+    ]
+  },
+  {
+    "name": "read_memory",
+    "description": "读工作区里的一个文件。长文件用 offset/limit 切片。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "文件路径，相对工作区"
+        },
+        "offset": {
+          "type": "integer",
+          "description": "从第几行开始（1 起）"
+        },
+        "limit": {
+          "type": "integer",
+          "description": "读几行"
+        }
+      },
+      "required": [
+        "path"
+      ]
+    },
+    "tags": [
+      "read"
+    ]
+  },
+  {
+    "name": "write_memory",
+    "description": "写工作区里的一个文件。mode=append 是追加（默认），mode=overwrite 是整篇重写。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "文件路径，相对工作区"
+        },
+        "text": {
+          "type": "string",
+          "description": "要写的内容"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "append",
+            "overwrite"
+          ]
+        }
+      },
+      "required": [
+        "path",
+        "text"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "note",
+    "description": "往自己的小账本（data/）里记一笔，带时间戳。心跳、醒过、做过什么。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "记什么"
+        },
+        "file": {
+          "type": "string",
+          "description": "哪个账本，默认 notebook.log"
+        }
+      },
+      "required": [
+        "text"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "see_screen",
+    "description": "看一眼屏幕：抓一张截图，图会直接送到你眼前（你真能看见），同时也告诉你屏幕多大、鼠标在哪、前台是什么窗口。",
+    "parameters": {
+      "type": "object",
+      "properties": {}
+    },
+    "tags": [
+      "read",
+      "snapshot"
+    ]
+  },
+  {
+    "name": "set_alarm",
+    "description": "给自己设一个闹钟。到点会自己冒气泡提醒。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "when": {
+          "type": "string",
+          "description": "什么时候：\"22:30\"（过了就是明天）、\"2026-10-31 08:30\"、\"in 30m\""
+        },
+        "note": {
+          "type": "string",
+          "description": "到点要说什么（提醒什么）"
+        },
+        "daily": {
+          "type": "boolean",
+          "description": "true = 每天这个点都提醒"
+        }
+      },
+      "required": [
+        "when",
+        "note"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "list_alarms",
+    "description": "看看自己有哪些闹钟。",
+    "parameters": {
+      "type": "object",
+      "properties": {}
+    },
+    "tags": [
+      "read"
+    ]
+  },
+  {
+    "name": "cancel_alarm",
+    "description": "取消一个闹钟（按编号）。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "闹钟编号"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "click",
+    "description": "在屏幕某处点一下鼠标。坐标用 see_screen 那张截图的像素（会自动换算成实际像素）。会先问你。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "integer",
+          "description": "横坐标（截图坐标）"
+        },
+        "y": {
+          "type": "integer",
+          "description": "纵坐标（截图坐标）"
+        },
+        "button": {
+          "type": "string",
+          "enum": [
+            "left",
+            "right",
+            "middle"
+          ]
+        },
+        "clicks": {
+          "type": "integer",
+          "description": "点几下，默认 1"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "move_mouse",
+    "description": "把鼠标移过去，不点。坐标用截图坐标。会先问你。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "scroll",
+    "description": "滚轮。正数往下、负数往上，单位是格。会先问你。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "notches": {
+          "type": "integer",
+          "description": "滚几格，正下负上"
+        },
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "notches"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "type_text",
+    "description": "往当前有焦点的输入框里打一段字（不经过输入法，中文也能直接打）。\\n 是回车。会先问你。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "要打的字"
+        }
+      },
+      "required": [
+        "text"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "press_keys",
+    "description": "按组合键：\"ctrl+s\"、\"alt+f4\"、\"enter\"、\"ctrl+a delete\"（空格是依次按）。会先问你。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "string",
+          "description": "要按的键"
+        }
+      },
+      "required": [
+        "keys"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "hold_keys",
+    "description": "按住一组键不放，过几秒再松开（最多 30 秒）。按住 Shift 拖选、按住 ctrl 点多个、长按方向键都靠它。「按一下」还是用 press_keys。会先问你。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "keys": {
+          "type": "string",
+          "description": "要按住的键，比如 shift、ctrl+shift"
+        },
+        "seconds": {
+          "type": "number",
+          "description": "按住几秒，最多 30"
+        }
+      },
+      "required": [
+        "keys"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "hold_mouse",
+    "description": "在一个地方把鼠标键按住几秒再松开（最多 30 秒）。拉选区、按住不放等菜单、慢慢拖都靠它。「点一下」还是用 click。会先问你。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "button": {
+          "type": "string",
+          "description": "left / right / middle，默认 left"
+        },
+        "seconds": {
+          "type": "number",
+          "description": "按住几秒，最多 30"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "list_windows",
+    "description": "列一下桌上有哪些窗（标题、位置、大小、哪个在前台、哪个最小化）。要切窗、要点某个程序之前先用它。",
+    "parameters": {
+      "type": "object",
+      "properties": {}
+    },
+    "tags": [
+      "read"
+    ]
+  },
+  {
+    "name": "focus_window",
+    "description": "把一个窗拎到前台（最小化的会先还原）。which 填 list_windows 给的短 id，或者标题里的一段字。会先问你。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "which": {
+          "type": "string",
+          "description": "短 id 或标题里的一段字"
+        }
+      },
+      "required": [
+        "which"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "drag",
+    "description": "按住左键从一处拖到另一处（选中、拖窗口、拉滚动条）。坐标用 see_screen 那张截图的像素。会先问你。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "x1": {
+          "type": "integer"
+        },
+        "y1": {
+          "type": "integer"
+        },
+        "x2": {
+          "type": "integer"
+        },
+        "y2": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "x1",
+        "y1",
+        "x2",
+        "y2"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  },
+  {
+    "name": "zoom",
+    "description": "从屏幕重新截一个小块并放大，看清小字/小图标。坐标用最近那张截图的像素。图会直接送到你眼前。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "width",
+        "height"
+      ]
+    },
+    "tags": [
+      "read",
+      "snapshot"
+    ]
+  },
+  {
+    "name": "run_command",
+    "description": "跑一条命令行命令，把输出的字拿回来（不弹窗、不用你手打）。默认在工作区里跑，会先单独问你一次。超时最多 120 秒，输出太长只留开头和结尾。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "command": {
+          "type": "string",
+          "description": "要跑的命令，比如 \"dir\"、\"python -V\""
+        },
+        "cwd": {
+          "type": "string",
+          "description": "在哪跑（相对工作区）；空 = 工作区根"
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "最多等几秒，默认 30"
+        }
+      },
+      "required": [
+        "command"
+      ]
+    },
+    "tags": [
+      "act"
+    ]
+  }
+]

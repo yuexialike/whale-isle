@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- Local copy of Coop's figure frame sandbox, for the new home (see figure_web.py).
+     Same markup as web/figure-frame.html, only the script path is relative and there is no CSP. -->
+<style>
+html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; }
+#root { position: absolute; inset: 0; }
+</style>
+<script>
+// Bridge, defined before anything else: the frame talks to its parent with postMessage, and here the
+// parent is the page itself. Keep the last frame where Python can poll it by runJavaScript.
+window.__ready = 0; window.__loaded = 0; window.__err = null; window.__words = null; window.__f = null;
+addEventListener('message', function (e) {
+  var d = e.data || {};
+  if (d.t === 'loaded') { window.__loaded = 1; }
+  else if (d.t === 'frame') { window.__f = d; }
+  else if (d.t === 'ready') { window.__ready = 1; window.__words = d.words || null; }
+  else if (d.t === 'error') { window.__err = d.message; }
+});
+window.__send = function (m) { postMessage(m, '*'); };
+window.__tick = function (dt) { postMessage({ t: 'tick', dt: dt }, '*'); };
+</script>
+</head>
+<body>
+<div id="root" aria-hidden="true"></div>
+<script type="module" src="figure-frame.js"></script>
+</body>
+</html>

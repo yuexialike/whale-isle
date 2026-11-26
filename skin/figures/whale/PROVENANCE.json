@@ -1,0 +1,7 @@
+{
+  "temporary": true,
+  "ship": false,
+  "source": "C:/Users/28117/Coopanion/resources/app/node_modules/cortico-world-desktop-pet/web/whale",
+  "copied": "2026-11-20",
+  "note": "从 Coop 整目录拷来的临时素材：487 个文件 / 16,017,069 字节，figure.json 与贴图未改。对外那版一律不带（pack_beta 按 ship:false 排除）；将来月下自己画好分层部件图后，按 skin/figures/<id>/ 放进来替换即可，代码不改。"
+}

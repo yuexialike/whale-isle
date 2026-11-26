@@ -1,0 +1,141 @@
+{
+  "manifest": 2,
+  "api": 2,
+  "id": "littlewhale",
+  "version": "0.1.0",
+  "name": {
+    "zh": "小鲸鱼",
+    "en": "Little Whale"
+  },
+  "about": {
+    "zh": "一个小鲸鱼：正视着屏幕外，圆圆的一个身子、前面两只眼睛、尾巴藏在身后；没有腿，不跳，会从头顶喷一小股水，走路叫游。",
+    "en": "a little whale facing straight out: one round body, two eyes in front, its tail behind it; no legs, no jumping, it spouts a small jet of water from the top of its head and swims instead of walking"
+  },
+  "author": "鱼鱼",
+  "entry": "figure.js",
+  "export": "createLittleWhaleBody",
+  "axes": [
+    {
+      "id": "scheme",
+      "name": {
+        "zh": "配色",
+        "en": "Colours"
+      },
+      "options": [
+        {
+          "id": "deepseek",
+          "name": {
+            "zh": "深海蓝",
+            "en": "Deep sea blue"
+          },
+          "accent": "#4D6BFE"
+        },
+        {
+          "id": "ice",
+          "name": {
+            "zh": "冰白",
+            "en": "Ice white"
+          },
+          "accent": "#8FB6D9"
+        },
+        {
+          "id": "pink",
+          "name": {
+            "zh": "樱花粉",
+            "en": "Sakura pink"
+          },
+          "accent": "#F08CA8"
+        },
+        {
+          "id": "ink",
+          "name": {
+            "zh": "石墨",
+            "en": "Graphite"
+          },
+          "accent": "#4A5160"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "id": "deepseek",
+      "pick": {
+        "scheme": "deepseek"
+      },
+      "name": {
+        "zh": "深海蓝",
+        "en": "Deep sea blue"
+      }
+    },
+    {
+      "id": "ice",
+      "pick": {
+        "scheme": "ice"
+      },
+      "name": {
+        "zh": "冰白",
+        "en": "Ice white"
+      }
+    },
+    {
+      "id": "pink",
+      "pick": {
+        "scheme": "pink"
+      },
+      "name": {
+        "zh": "樱花粉",
+        "en": "Sakura pink"
+      }
+    },
+    {
+      "id": "ink",
+      "pick": {
+        "scheme": "ink"
+      },
+      "name": {
+        "zh": "石墨",
+        "en": "Graphite"
+      }
+    }
+  ],
+  "vocab": [
+    { "id": "neutral", "kind": "expression", "names": { "zh": ["平静"] }, "about": { "zh": "默认的脸", "en": "the default face" }, "seconds": 0.9 },
+    { "id": "happy", "kind": "expression", "names": { "zh": ["开心", "高兴"] }, "about": { "zh": "眯眼笑，尾巴摇", "en": "smiles with narrowed eyes, tail wags" }, "seconds": 0.9 },
+    { "id": "wink", "kind": "expression", "names": { "zh": ["眨眼"] }, "about": { "zh": "一只眼 ^", "en": "one eye winks" }, "seconds": 0.9 },
+    { "id": "love", "kind": "expression", "names": { "zh": ["喜欢", "爱心"] }, "about": { "zh": "眼睛变心形，冒小心心", "en": "heart-shaped eyes and little hearts" }, "seconds": 0.9 },
+    { "id": "shy", "kind": "expression", "names": { "zh": ["害羞"] }, "about": { "zh": "脸红，眼神躲开", "en": "blushes and looks away" }, "seconds": 0.9 },
+    { "id": "surprised", "kind": "expression", "names": { "zh": ["惊讶", "吃惊"] }, "about": { "zh": "眼睛放大，头顶感叹号", "en": "wide eyes, an exclamation mark above" }, "seconds": 0.9 },
+    { "id": "angry", "kind": "expression", "names": { "zh": ["生气"] }, "about": { "zh": "皱眉，头顶怒气符号", "en": "frowns, anger mark above" }, "seconds": 0.9 },
+    { "id": "sad", "kind": "expression", "names": { "zh": ["难过", "伤心"] }, "about": { "zh": "八字眉，掉眼泪", "en": "sad brows, tears fall" }, "seconds": 0.9 },
+    { "id": "sleepy", "kind": "expression", "names": { "zh": ["犯困", "困"] }, "about": { "zh": "眯眼打哈欠", "en": "sleepy eyes, a yawn" }, "seconds": 0.9 },
+    { "id": "thinking", "kind": "expression", "names": { "zh": ["思考", "想想"] }, "about": { "zh": "眼睛往上看，冒圈圈", "en": "looks up and thinks" }, "seconds": 0.9 },
+    { "id": "smug", "kind": "expression", "names": { "zh": ["得意", "嘚瑟"] }, "about": { "zh": "半眯着眼，嘴角带笑", "en": "smug half-closed eyes" }, "seconds": 0.9 },
+    { "id": "pout", "kind": "expression", "names": { "zh": ["嘟嘴", "哼"] }, "about": { "zh": "嘴嘟起来", "en": "pouts" }, "seconds": 0.9 },
+    { "id": "worried", "kind": "expression", "names": { "zh": ["担心", "着急"] }, "about": { "zh": "八字眉，冒冷汗", "en": "worried brows, a sweat drop" }, "seconds": 0.9 },
+    { "id": "determined", "kind": "expression", "names": { "zh": ["认真", "坚定"] }, "about": { "zh": "眼神压低，一脸认真", "en": "a determined look" }, "seconds": 0.9 },
+    { "id": "flustered", "kind": "expression", "names": { "zh": ["慌张", "窘"] }, "about": { "zh": "眼睛变成 > <，满脸通红冒汗", "en": "flustered, red in the face" }, "seconds": 0.9 },
+    { "id": "scared", "kind": "expression", "names": { "zh": ["害怕", "吓到"] }, "about": { "zh": "眼睛瞪大，冒汗", "en": "scared, eyes wide" }, "seconds": 0.9 },
+    { "id": "excited", "kind": "expression", "names": { "zh": ["期待", "星星眼"] }, "about": { "zh": "眼睛里闪着星星", "en": "stars in the eyes" }, "seconds": 0.9 },
+    { "id": "cry", "kind": "expression", "names": { "zh": ["大哭", "哭"] }, "about": { "zh": "闭眼大哭，眼泪直流", "en": "cries, tears streaming" }, "seconds": 0.9 },
+    { "id": "confused", "kind": "expression", "names": { "zh": ["疑惑", "问号"] }, "about": { "zh": "一脸不解，头顶问号", "en": "a question mark above" }, "seconds": 0.9 },
+    { "id": "stand", "kind": "motion", "names": { "zh": ["站起", "站"] }, "about": { "zh": "浮起来", "en": "rises up" }, "seconds": 0.8 },
+    { "id": "spout", "kind": "motion", "names": { "zh": ["喷水"] }, "about": { "zh": "从头顶喷一小股水（代替跳）", "en": "spouts water from the top of its head (instead of jumping)" }, "seconds": 1.6 },
+    { "id": "look", "kind": "motion", "names": { "zh": ["张望", "看看"] }, "about": { "zh": "左右张望", "en": "looks around" }, "seconds": 1.4 },
+    { "id": "turn", "kind": "motion", "names": { "zh": ["转身"] }, "about": { "zh": "转向另一边", "en": "turns round" }, "seconds": 0.6 },
+    { "id": "nod", "kind": "motion", "names": { "zh": ["点头"] }, "about": { "zh": "上下点两下", "en": "nods" }, "seconds": 0.7 },
+    { "id": "shake", "kind": "motion", "names": { "zh": ["摇头"] }, "about": { "zh": "左右摇两下", "en": "shakes its head" }, "seconds": 0.7 },
+    { "id": "spin", "kind": "motion", "names": { "zh": ["转圈"] }, "about": { "zh": "原地转一圈", "en": "spins once" }, "seconds": 0.6 },
+    { "id": "sit", "kind": "motion", "names": { "zh": ["坐下", "坐"] }, "about": { "zh": "沉下去待着，保持到下一个动作", "en": "settles down and stays" }, "seconds": 0.9, "lasting": true },
+    { "id": "sleep", "kind": "motion", "names": { "zh": ["睡觉", "睡"] }, "about": { "zh": "闭眼打盹，保持到下一个动作", "en": "falls asleep and stays" }, "seconds": 0.9, "lasting": true },
+    { "id": "dizzy", "kind": "motion", "names": { "zh": ["晕", "转晕"] }, "about": { "zh": "头晕眼花几秒", "en": "dizzy for a few seconds" }, "seconds": 2.6 },
+    { "id": "walk", "kind": "motion", "names": { "zh": ["游", "游泳"] }, "about": { "zh": "游一段（就是走）", "en": "swims a little (walking)" }, "seconds": 1.2 },
+    { "id": "run", "kind": "motion", "names": { "zh": ["快游", "游起来"] }, "about": { "zh": "一下游到另一头", "en": "swims quickly across" }, "seconds": 1.2 },
+    { "id": "wave", "kind": "motion", "names": { "zh": ["招手", "打招呼"] }, "about": { "zh": "摆摆前面的鳍", "en": "waves a fin" }, "seconds": 1.6 },
+    { "id": "dance", "kind": "motion", "names": { "zh": ["跳舞", "摇摆"] }, "about": { "zh": "原地摇三秒", "en": "dances for three seconds" }, "seconds": 3.4 }
+  ],
+  "sounds": {},
+  "can": {
+    "walk": true
+  }
+}
