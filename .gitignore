@@ -17,3 +17,4 @@ workspace/
 updates/history/
 
 installer/build-inst/
+release/*.zip 

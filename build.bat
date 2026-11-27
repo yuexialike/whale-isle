@@ -9,6 +9,8 @@ setlocal
 cd /d "%~dp0"
 
 set PY="D:\fish\svc\venv\Scripts\python.exe"
+rem 2026-11-27: that venv is the author's own; fall back to whatever python is on PATH.
+if not exist %PY% set PY=python
 set OUT=data\build.txt
 if not exist data mkdir data
 echo ==== build %DATE% %TIME% ==== > "%OUT%"
@@ -49,6 +51,7 @@ rem the 2D figure also sits NEXT TO the exe: firstrun writes figure_image = home
 rem (2026-11-01: the shippable build uses the current 2D figure). Missing file just means
 rem body.py falls back to drawing the blob, so this copy is allowed to fail quietly.
 if exist figure-me-child-v23.png copy /Y figure-me-child-v23.png "%DIST%\figure-default.png" >> "%OUT%" 2>&1
+if exist isla.png copy /Y isla.png "%DIST%\figure-default.png" >> "%OUT%" 2>&1
 
 rem plugins arrive from the author, so ship the folder empty
 if not exist "%DIST%\plugins" mkdir "%DIST%\plugins"

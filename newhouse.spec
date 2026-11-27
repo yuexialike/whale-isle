@@ -18,7 +18,7 @@ a = Analysis(
     [str(HERE / "main.py")],
     pathex=[str(HERE)],
     binaries=[],
-    datas=[(str(HERE / "whale-isle.ico"), ".")],   # 只带图标：模板由 build.bat 拷，不塞进 _MEI
+    datas=[(str(HERE / "isla.ico"), ".")],   # 只带图标：模板由 build.bat 拷，不塞进 _MEI
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -45,7 +45,7 @@ exe = EXE(
     strip=False,
     upx=False,                    # UPX 会让 Defender 更爱报毒，不用
     console=False,                # 没有黑窗口，和 pythonw 一样
-    icon=str(HERE / "whale-isle.ico"),  # exe 自己的图标（那个从远景深海抠出来的鱼）
+    icon=str(HERE / "isla.ico"),  # exe 自己的图标（那个从远景深海抠出来的鱼）
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
