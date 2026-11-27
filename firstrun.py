@@ -63,8 +63,9 @@ def _default_config(home: Path) -> dict:
         "figure_image": str(home / "figure-default.png"),
         "speak_aloud": True,
         "heartbeat_minutes": 30,
-        # 19:55 检查更新：清单放静态地址就行（关于页里能填）。空着 = 只提示「还没配」。
-        "update_url": "",
+        # 19:55 检查更新：清单放静态地址就行（关于页里能填）。
+        # 2026-11-27：默认就填上仓里那份，新装的不用再手输（update.py 里还有一层兜底）。
+        "update_url": "https://raw.githubusercontent.com/yuexialike/whale-isle/main/update.json",
         # 20:15 引导页：新装的包第一次开机要摆一页纸，看完写 true（见 welcome.py）
         "welcomed": False,
         "ears": False,
