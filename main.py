@@ -572,7 +572,7 @@ def main() -> int:
                 return w
         except RuntimeError:
             pass                             # 关掉时已经销毁了，重新开一张
-        w = settings_page.show_settings(cfg, chat=page)
+        w = settings_page.show_settings(cfg, chat=page, on_quit=_quit_app)
         _settings_win["w"] = w
         try:
             w.on_apply = apply_live           # 每存一次就当场换，不用重启
@@ -588,6 +588,25 @@ def main() -> int:
         return w
 
     body.on_right_click = lambda: open_settings(True)     # 右键：设置 → 对话那页
+
+    # ---- 退出入口（2026-11-27 补）----
+    # 背景：开源版有人报「关不掉、只能任务管理器」。根因是程序里压根没有退出这条路。
+    # 现在右键出菜单：对话／设置／隐藏／退出。退出走 app.quit()，让 aboutToQuit 该收的收。
+    def _quit_app() -> None:
+        memory.note_file("startup.log", "从右键菜单退出")
+        app.quit()
+
+    def _hide_body() -> None:
+        cfg["figure_visible"] = False
+        try:
+            body.show_figure(False)
+        except Exception:                            # noqa: BLE001
+            pass
+        memory.note_file("startup.log", "从右键菜单隐藏（勾回去在设置页「站在屏幕上」）")
+
+    body.on_menu_settings = lambda: open_settings(False)
+    body.on_menu_hide = _hide_body
+    body.on_menu_quit = _quit_app
 
     # ---- 任务栏那一格：11-02 20:07「任务栏里要有一格，点了能开来」----
     # 本体是 Qt.Tool，Windows 不给它任务栏按钮；立一个 1×1 的透明锚占那一格，
@@ -843,7 +862,7 @@ def main() -> int:
     def _voice_job(a: dict) -> None:
         """闹钟带 voice 的：说一句，再从 QQ 发一条语音过去。"""
         try:
-            to = str(a.get("to") or cfg.get("daily_voice_to") or "private:YOUR_QQ")
+            to = str(a.get("to") or cfg.get("daily_voice_to") or "private:2811742503")
             prompt = str(a.get("prompt") or a.get("note") or "到点了，跟老爹说一句")
             fallback = str(a.get("say") or a.get("note") or "到点啦")
             line = _speak_line(prompt, fallback)

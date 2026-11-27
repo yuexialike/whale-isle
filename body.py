@@ -16,7 +16,7 @@ import touch_notes       # 3-4：碰触只记账，不叫醒模型
 from PySide6.QtCore import QPoint, QRectF, Qt, QTimer
 from PySide6.QtGui import (QColor, QCursor, QFont, QFontMetrics, QGuiApplication, QPainter,
                            QPainterPath, QPen)
-from PySide6.QtWidgets import QWidget
+from PySide6.QtWidgets import QMenu, QWidget
 
 BODY_W, BODY_H = 220, 400      # 小人画布（桌宠本体约 210px 高，这里画到差不多一个量级）
 BUBBLE_H = 150                 # 气泡预留高度
@@ -1181,9 +1181,24 @@ class Body(QWidget):
         ev.accept()
 
     def contextMenuEvent(self, ev) -> None:
-        """右键：开对话页（双击要是不灵，就用这个）。"""
+        """右键：接上菜单就弹菜单（对话／设置／隐藏／退出）；没接就退回老样子——开对话页。
+
+        2026-11-27：开源版有人报「桌宠关不掉，只能任务管理器」。查下来是**根本没有退出入口**：
+        main.py 把 setQuitOnLastWindowClosed 关了，右键只开设置页，设置页里也没有退出。
+        所以这里加一张真的菜单；四个钩子都是可选的，谁没接就不出现。
+        """
         self._log("rightclick")
-        hook = self.on_right_click or self.on_double_click
-        if callable(hook):
-            hook()
+        entries = [
+            ("对话", getattr(self, "on_right_click", None) or getattr(self, "on_double_click", None)),
+            ("设置", getattr(self, "on_menu_settings", None)),
+            ("隐藏", getattr(self, "on_menu_hide", None)),
+            ("退出", getattr(self, "on_menu_quit", None)),
+        ]
+        entries = [(title, fn) for title, fn in entries if callable(fn)]
+        if entries:
+            menu = QMenu(self)
+            for title, fn in entries:
+                act = menu.addAction(title)
+                act.triggered.connect(fn)
+            menu.exec(ev.globalPos())
         ev.accept()

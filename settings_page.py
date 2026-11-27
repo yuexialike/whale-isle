@@ -462,8 +462,12 @@ class _TitleBar(QWidget):
 
 
 class SettingsPage(QWidget):
-    def __init__(self, cfg: dict | None = None, chat: QWidget | None = None) -> None:
+    def __init__(self, cfg: dict | None = None, chat: QWidget | None = None,
+                 on_quit=None) -> None:
         super().__init__()
+        # 2026-11-27：开源版有人报「关不掉、只能任务管理器」。这里接一个退出回调，
+        # 「关于」页底部就有真的「退出鲸屿」了。没接（旧调用方）就不显示那颗按钮。
+        self.on_quit = on_quit
         self.cfg = dict(cfg if cfg is not None else memory.load_config())
         __import__("i18n").set_lang(self.cfg.get("language") or "zh")
         self.setWindowTitle("鲸屿 · " + __import__("i18n").t("settings.title"))
@@ -2334,8 +2338,43 @@ class SettingsPage(QWidget):
         gb.addLayout(grow)
         self._refresh_gate_note()
 
+        # ---- 退出（2026-11-27 补）----
+        # 开源版报「关不掉、只能任务管理器」：程序里压根没有退出这条路，这里补一颗真的。
+        if callable(getattr(self, "on_quit", None)):
+            ex, eb = _card("关掉鲸屿", "想真的退出就在这儿点。关掉设置页不算退出，人还站在屏幕上。")
+            quitbtn = _ghost("退出鲸屿")
+            quitbtn.clicked.connect(self._quit_app)
+            exrow = QHBoxLayout()
+            exrow.addWidget(quitbtn)
+            exrow.addStretch(1)
+            eb.addLayout(exrow)
+            quit_card = ex
+        else:
+            quit_card = None
+
         return self._scroll(_page_head("page.about.title", "page.about.sub"),
-                            head, why, up, who, safe, gate, paths)
+                            head, why, up, who, safe, gate, paths,
+                            *([quit_card] if quit_card is not None else []))
+
+    def _quit_app(self) -> None:
+        """问一句再退——点了就真没了，屏幕上不留人。"""
+        box = QMessageBox(self)
+        box.setWindowTitle("退出鲸屿")
+        box.setText("退出鲸屿？退出之后屏幕上就不剩人了。")
+        box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        box.setDefaultButton(QMessageBox.No)
+        if box.exec() != QMessageBox.Yes:
+            return
+        try:
+            import memory as _mem
+            _mem.note_file("startup.log", "从设置页「退出鲸屿」退出")
+        except Exception:                                        # noqa: BLE001
+            pass
+        try:
+            self.on_quit()
+        except Exception:                                        # noqa: BLE001
+            from PySide6.QtWidgets import QApplication
+            QApplication.quit()
 
     # ---- 激活门（19:58）----
     def _refresh_gate_note(self) -> None:
@@ -2516,9 +2555,13 @@ class SettingsPage(QWidget):
                                  restored=len(res['restored'])))
 
 
-def show_settings(cfg: dict | None = None, chat: QWidget | None = None) -> SettingsPage:
-    """开一张设置窗（不阻塞调用方）。chat 给了就当「对话」那一页用。"""
-    win = SettingsPage(cfg, chat=chat)
+def show_settings(cfg: dict | None = None, chat: QWidget | None = None,
+                  on_quit=None) -> SettingsPage:
+    """开一张设置窗（不阻塞调用方）。chat 给了就当「对话」那一页用。
+
+    on_quit 给了，「关于」页底部就有一颗「退出鲸屿」（2026-11-27 补，治「关不掉」）。
+    """
+    win = SettingsPage(cfg, chat=chat, on_quit=on_quit)
     win.setAttribute(Qt.WA_DeleteOnClose, True)
     win.show()
     win.raise_()

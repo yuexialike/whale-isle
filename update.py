@@ -35,6 +35,10 @@ from pathlib import Path
 import version
 
 NO_URL = "还没配更新地址（config.update_url）"
+# 2026-11-27：以前 update_url 默认是空的，人装完「检查更新」永远得到「还没配」。
+# 现在给一个默认的：GitHub 仓里那份 update.json。config 里填了就用填的，没填就走这儿——
+# 所以**已经装出去的 v1.0.0 也能靠这次之后的版本自己更新**（它们那一版还是老逻辑，第一次得手动）。
+DEFAULT_MANIFEST = "https://raw.githubusercontent.com/yuexialike/whale-isle/main/update.json"
 TIMEOUT = 6.0
 
 # 5-3：装的时候这些顶层东西一律不覆盖（用户的配置、记忆、插件、模型）
@@ -46,7 +50,7 @@ PROTECT = {
 
 def manifest_url(cfg: dict | None = None) -> str:
     cfg = cfg or {}
-    return str(cfg.get("update_url") or "").strip()
+    return str(cfg.get("update_url") or "").strip() or DEFAULT_MANIFEST
 
 
 def _read(url: str, timeout: float = TIMEOUT) -> str:

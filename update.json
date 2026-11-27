@@ -1,0 +1,8 @@
+{
+  "version": "1.0.1",
+  "date": "2026-11-27",
+  "notes": "修：桌宠关不掉（右键菜单加了「对话／设置／隐藏／退出」，设置页「关于」底部加了「退出鲸屿」）；修：桌面/任务栏图标空白（isla.ico、isla.png 放回仓根）；改：检查更新默认走这个清单，不用再手填地址。",
+  "url": "https://raw.githubusercontent.com/yuexialike/whale-isle/main/release/jingyu-1.0.1.zip",
+  "sha256": "da61e7ca234642873115a479ec51f8bbae3fb11423503822d59193566e217740",
+  "min_from": "1.0.0"
+}
